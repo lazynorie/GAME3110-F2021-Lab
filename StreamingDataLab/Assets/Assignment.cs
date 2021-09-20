@@ -53,6 +53,11 @@ public partial class PartyCharacter
 
     public LinkedList<int> equipment;
 
+    public LinkedList<int> somethingelse;
+
+    public LinkedList<int> morethings;
+
+
 }
 
 
@@ -76,6 +81,8 @@ public partial class PartyCharacter
 
 static public class AssignmentPart1
 {
+    const int PartyCharacterSaveDataSingifier = 0;
+    const int EquipmentSaveDataSingifier = 1;
 
 
     static public void SavePartyButtonPressed()
@@ -83,36 +90,36 @@ static public class AssignmentPart1
 
         StreamWriter sw = new StreamWriter(Application.dataPath + Path.DirectorySeparatorChar + "SaveFile.txt");
 
+        Debug.Log("loop start");
+
         foreach (PartyCharacter pc in GameContent.partyCharacters)
         {
-            //Debug.Log(Application.dataPath + Path.DirectorySeparatorChar + "SaveFile.txt");
+            /*
+            Debug.Log(Application.dataPath + Path.DirectorySeparatorChar + "SaveFile.txt");
+            Debug.Log("PC class id == " + pc.classID + "," + pc.health);
+            Pretending we are saving!!!!!!
+            Debug.Log(
+            pc.classID + "," + pc.health + "," + pc.mana + "," + pc.strength + "," + pc.agility + "," + pc.wisdom
+                );
+            */
 
-           
-
-            //Debug.Log("PC class id == " + pc.classID + "," + pc.health);
-
-            //Pretending we are saving!!!!!!
-            //
-
-            //Debug.Log(
-            //pc.classID + "," + pc.health + "," + pc.mana + "," + pc.strength + "," + pc.agility + "," + pc.wisdom
-            //    );
-
-            sw.WriteLine(pc.classID + "," + pc.health + "," + pc.mana + "," + pc.strength + "," + pc.agility + "," + pc.wisdom);
-
-
-
-
-
-
+            sw.WriteLine(PartyCharacterSaveDataSingifier + "," + pc.classID + "," + pc.health + ","
+                + pc.mana + "," + pc.strength + "," + pc.agility + "," + pc.wisdom);
 
             //pc.equipment
+
+            foreach (int equipID in pc.equipment)
+            {
+                sw.WriteLine(EquipmentSaveDataSingifier + "," + equipID);
+            }
 
 
 
         }
 
         sw.Close();
+
+        Debug.Log("end of loop");
     }
 
     static public void LoadPartyButtonPressed()
@@ -133,21 +140,27 @@ static public class AssignmentPart1
             {
                 string[] csv = line.Split(',');
 
+                int saveDataSignifier = int.Parse(csv[0]);
+
+                if (saveDataSignifier == PartyCharacterSaveDataSingifier)
+                {
+                    PartyCharacter pc = new PartyCharacter(int.Parse(csv[1]), int.Parse(csv[2]), int.Parse(csv[3]), int.Parse(csv[4]), int.Parse(csv[5]), int.Parse(csv[6]));
+                    GameContent.partyCharacters.AddLast(pc);
+
+                }
+                else if (saveDataSignifier == EquipmentSaveDataSingifier)
+                {
+                    GameContent.partyCharacters.Last.Value.equipment.AddLast(int.Parse(csv[1]));
+                }
+                
+
                 foreach (string i in csv)
                     Debug.Log(i);
 
-                //line.Split(csv);
-
-                //Console.WriteLine(line);  
-                Debug.Log(line);
-
-                PartyCharacter pc = new PartyCharacter(int.Parse(csv[0]), int.Parse(csv[1]), int.Parse(csv[2]),
-                    int.Parse(csv[3]), int.Parse(csv[4]), int.Parse(csv[5]));
-
-                GameContent.partyCharacters.AddLast(pc);
+               
             }
         }
-                GameContent.RefreshUI();
+        GameContent.RefreshUI();
 
     }
 
