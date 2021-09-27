@@ -178,7 +178,7 @@ static public class AssignmentPart1
 //  This will enable the needed UI/function calls for your to proceed with your assignment.
 static public class AssignmentConfiguration
 {
-    public const int PartOfAssignmentThatIsInDevelopment = 1;
+    public const int PartOfAssignmentThatIsInDevelopment = 2;
 }
 
 /*
@@ -228,7 +228,7 @@ static public class AssignmentPart2
     {
         return new List<string>() {
             "sample 1",
-            "sample 2",
+            "what the hell is this line?",
             "sample 3"
         };
 
@@ -237,21 +237,24 @@ static public class AssignmentPart2
     static public void LoadPartyDropDownChanged(string selectedName)
     {
         GameContent.RefreshUI();
+        Debug.Log("l");
+
     }
 
     static public void SavePartyButtonPressed()
     {
         GameContent.RefreshUI();
+        Debug.Log("s");
     }
 
     static public void NewPartyButtonPressed()
     {
-
+        Debug.Log("n");
     }
 
     static public void DeletePartyButtonPressed()
     {
-
+        Debug.Log("d");
     }
 
 }
